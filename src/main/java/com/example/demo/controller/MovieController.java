@@ -19,11 +19,12 @@ public class MovieController {
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
- @GetMapping("/all/{genreUser}/{genreGeneral}")
+ @GetMapping("/all/{genreUser}/{genreGeneral}/{userId}")
  public MovieClassDeduplicated getAllUniqueList(
          @PathVariable("genreUser") int genreId_User,
-         @PathVariable("genreGeneral") int genreId_General) {
- return movieService.getAllUniqueList(genreId_User, genreId_General);
+         @PathVariable("genreGeneral") int genreId_General,
+         @PathVariable("userId") Long userId) {
+ return movieService.getAllUniqueList(genreId_User, genreId_General, userId);
  }
     @GetMapping("/movie_most_popular")
     public Movie getMostPopularMovie() {

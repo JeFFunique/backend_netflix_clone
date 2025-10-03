@@ -5,9 +5,13 @@ import com.example.demo.dto.TmdbResponse;
 import com.example.demo.dto.TmdbTrailerResponse;
 import com.example.demo.dto.TmdbTrailerVideo;
 import com.example.demo.dto.MovieClassDeduplicated;
+import com.example.demo.entity.Favorite;
 import com.example.demo.entity.Movie;
+import com.example.demo.entity.User;
 import com.example.demo.mapper.MovieMapper;
+import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.MovieRepository;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +28,16 @@ import java.util.stream.Stream;
 public class MovieService {
     private final MovieRepository movieRepository;
     private final WebClient webclient;
+    private final FavoriteRepository favoriteRepository;
+    private final UserRepository userRepository;
 
     public MovieService(MovieRepository movieRepository,
-                        @Qualifier("tmdbWebClient") WebClient tmdbWebClient) {
+                        @Qualifier("tmdbWebClient") WebClient tmdbWebClient,
+                        FavoriteRepository favoriteRepository, UserRepository userRepository) {
         this.movieRepository = movieRepository;
         this.webclient = tmdbWebClient;
+        this.favoriteRepository = favoriteRepository;
+        this.userRepository = userRepository;
     }
 
     public Movie addFavoriteToDb(Movie movie) {
@@ -38,8 +47,12 @@ public class MovieService {
         }
         return movieRepository.findByTmdbId(movie.getTmdbId());
     }
-    public List<Movie> getFavorisMovie() {
-        return movieRepository.findByCategory("FAVORITES");
+    public List<Movie> getFavorisMovie(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        List<Favorite> favorites = favoriteRepository.findByUser(user);
+        return favorites.stream()
+                .map(Favorite::getMovie)
+                .collect(Collectors.toList());
     }
     public List<Movie> getTrendingMovies() {
         TmdbResponse response = webclient.get()
@@ -196,8 +209,8 @@ public List<Movie> getFilmSearched(String search) {
         moviesSaved.forEach(m -> m.setCategory("TRENDING"));
         return movieRepository.saveAll(moviesSaved);
     }
-    public MovieClassDeduplicated getAllUniqueList(int genreId_user, int genreId_general) {
-        List<Movie> favoritesRaw = getFavorisMovie();
+    public MovieClassDeduplicated getAllUniqueList(int genreId_user, int genreId_general, Long userId) {
+        List<Movie> favoritesRaw = getFavorisMovie(userId);
         List<Movie> userBasedRaw = getUserRecommendationsMovies(genreId_user);
         List<Movie> trendingRaw = getTrendingMovies();
         List<Movie> generalBasedRaw = getGeneralRecommendationMovies(genreId_general);
