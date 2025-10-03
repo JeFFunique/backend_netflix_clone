@@ -15,7 +15,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // allow all endpoints
                         .allowedOrigins("http://localhost:3000",
-                                        "https://netflix-clone-rho-pied.vercel.app") // React frontend
+                                        "https://netflix-clone-jeff.vercel.app") // React frontend
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true);
