@@ -49,7 +49,7 @@ public class MovieService {
     }
     public List<Movie> getFavorisMovie(Long userId) {
         if(userId==null) {
-            return null;
+            return List.of();
         }
             User user = userRepository.findById(userId).orElseThrow();
             List<Favorite> favorites = favoriteRepository.findByUser(user);
