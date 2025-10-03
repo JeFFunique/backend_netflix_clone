@@ -40,13 +40,6 @@ public class MovieService {
         this.userRepository = userRepository;
     }
 
-    public Movie addFavoriteToDb(Movie movie) {
-        if (!movieRepository.existsByTmdbId(movie.getTmdbId())){
-            movie.setCategory("FAVORITES");
-            return movieRepository.save(movie);
-        }
-        return movieRepository.findByTmdbId(movie.getTmdbId());
-    }
     public List<Movie> getFavorisMovie(Long userId) {
         if(userId==null) {
             return List.of();

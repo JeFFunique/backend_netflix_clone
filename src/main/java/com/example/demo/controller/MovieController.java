@@ -50,10 +50,6 @@ public class MovieController {
     public List<Movie> saveTrendingMoviesToDb(@PathVariable String Category) {
         return movieService.saveTrendingMoviesToDb(Category);
     }
-    @PostMapping("sync/add_movie")
-    public Movie addFavoriteToDb(@RequestBody Movie movie) {
-        return movieService.addFavoriteToDb(movie);
-    }
     @PostMapping("/sync/user_recommendations/genre/{genreId}")
     public List<Movie> saveUserRecommendationMoviesToDb(@PathVariable int genreId, String Category) {
         return movieService.saveUserRecommendationMoviesToDb(genreId, Category);

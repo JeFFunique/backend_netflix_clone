@@ -28,13 +28,15 @@ public class FavoriteService {
     }
 
     public Favorite addFavorite(Long userId, Movie movie) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new RuntimeException("User not found with id: " + userId)
+        );
         Movie persistedMovie = movieRepository.findByTmdbId(movie.getTmdbId())
                 .orElseGet(() -> movieRepository.save(movie));
         return favoriteRepository.findByUserAndMovie(user, persistedMovie)
                 .orElseGet(() -> favoriteRepository.save(new Favorite() {{
                     setUser(user);
-                    setMovie(movie);
+                    setMovie(persistedMovie);
                 }}));
     }
 
