@@ -48,11 +48,14 @@ public class MovieService {
         return movieRepository.findByTmdbId(movie.getTmdbId());
     }
     public List<Movie> getFavorisMovie(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        List<Favorite> favorites = favoriteRepository.findByUser(user);
-        return favorites.stream()
-                .map(Favorite::getMovie)
-                .collect(Collectors.toList());
+        if(userId==null) {
+            return null;
+        }
+            User user = userRepository.findById(userId).orElseThrow();
+            List<Favorite> favorites = favoriteRepository.findByUser(user);
+            return favorites.stream()
+                    .map(Favorite::getMovie)
+                    .collect(Collectors.toList());
     }
     public List<Movie> getTrendingMovies() {
         TmdbResponse response = webclient.get()
