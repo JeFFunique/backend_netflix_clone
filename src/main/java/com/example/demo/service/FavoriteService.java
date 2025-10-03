@@ -34,10 +34,12 @@ public class FavoriteService {
         Movie persistedMovie = movieRepository.findByTmdbId(movie.getTmdbId())
                 .orElseGet(() -> movieRepository.save(movie));
         return favoriteRepository.findByUserAndMovie(user, persistedMovie)
-                .orElseGet(() -> favoriteRepository.save(new Favorite() {{
-                    setUser(user);
-                    setMovie(persistedMovie);
-                }}));
+                .orElseGet(() -> {
+                    Favorite favorite = new Favorite();
+                    favorite.setUser(user);
+                    favorite.setMovie(persistedMovie);
+                    return favoriteRepository.save(favorite);
+                });
     }
 
     public void removeFavorite(Long userId, Long movieId) {
