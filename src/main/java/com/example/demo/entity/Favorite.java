@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @Table(name = "favorites")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Favorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
