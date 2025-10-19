@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class TmdbMovie {
     private Long id;
     private String title;
+    private String name;
     @JsonProperty("poster_path")
     private String posterPath;
     @JsonProperty("backdrop_path")

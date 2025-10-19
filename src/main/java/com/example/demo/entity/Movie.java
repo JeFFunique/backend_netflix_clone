@@ -18,6 +18,7 @@ public class Movie {
     @Column(unique = true, nullable = false)
     private Long tmdbId;
     private String title;
+    private String name;
     @Column(length = 2000)
     private String overview;
     @Column(length = 1000)

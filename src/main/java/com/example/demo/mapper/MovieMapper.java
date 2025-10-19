@@ -9,6 +9,7 @@ public class MovieMapper {
         Movie movie = new Movie();
         movie.setTmdbId(dto.getId());
         movie.setTitle(dto.getTitle());
+        movie.setName(dto.getName());
         movie.setOverview(dto.getOverview());
         movie.setImageUrl(dto.getFullPosterIrl());
         movie.setBackgroundImageUrl(dto.getFullBackdropIrl());
